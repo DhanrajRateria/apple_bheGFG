@@ -1,3 +1,8 @@
+import 'package:apple_bhe/screens/information_screens/financials.dart';
+import 'package:apple_bhe/screens/information_screens/inventory.dart';
+import 'package:apple_bhe/screens/information_screens/ledger.dart';
+import 'package:apple_bhe/screens/information_screens/location.dart';
+import 'package:apple_bhe/screens/information_screens/orders.dart';
 import 'package:apple_bhe/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:apple_bhe/home_buttons.dart';
@@ -31,13 +36,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           title: "Inventory",
                           imagename: "inventory",
                           onPressed: () {
-                            Navigator.pushNamed(context, WelcomeScreen.id);
+                            Navigator.pushNamed(context, InventoryScreen.id);
                           }),
                       HomeButton(
                           title: "Ledger",
                           imagename: "ledger",
                           onPressed: () {
-                            Navigator.pushNamed(context, WelcomeScreen.id);
+                            Navigator.pushNamed(context, LedgerScreen.id);
                           }),
                     ]),
               ),
@@ -49,13 +54,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           title: "Orders",
                           imagename: "orders",
                           onPressed: () {
-                            Navigator.pushNamed(context, WelcomeScreen.id);
+                            Navigator.pushNamed(context, OrderScreen.id);
                           }),
                       HomeButton(
                           title: "Track",
                           imagename: "location",
                           onPressed: () {
-                            Navigator.pushNamed(context, WelcomeScreen.id);
+                            Navigator.pushNamed(context, Location.id);
                           }),
                     ]),
               ),
@@ -73,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           title: "Company Info",
                           imagename: "financials",
                           onPressed: () {
-                            Navigator.pushNamed(context, WelcomeScreen.id);
+                            Navigator.pushNamed(context, Financials.id);
                           }),
                     ]),
               )

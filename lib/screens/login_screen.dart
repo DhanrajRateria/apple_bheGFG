@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'home_screen.dart';
@@ -12,7 +13,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late String email;
   late String password;
-
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +61,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(backgroundColor: Colors.blue),
               ),
               onPressed: () {
-                Navigator.pushNamed(context, HomeScreen.id);
+                try {
+                  final alreadyUser = _auth.signInWithEmailAndPassword(
+                      email: email, password: password);
+                  if (alreadyUser != null) {
+                    Navigator.pushNamed(context, HomeScreen.id);
+                  }
+                } catch (e) {
+                  print(e);
+                }
               },
             ),
           ],

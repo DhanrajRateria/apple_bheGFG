@@ -4,7 +4,6 @@ class TableWithAddButton extends StatefulWidget {
   @override
   _TableWithAddButtonState createState() => _TableWithAddButtonState();
 }
-
 class _TableWithAddButtonState extends State<TableWithAddButton> {
   List<String> headers = ['ID', 'Party Name', 'Type', 'Bill Type', 'Value'];
   List<List<String>> rows = [];

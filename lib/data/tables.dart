@@ -1,9 +1,12 @@
+import 'package:apple_bhe/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TableWithAddButton extends StatefulWidget {
   @override
   _TableWithAddButtonState createState() => _TableWithAddButtonState();
 }
+
 class _TableWithAddButtonState extends State<TableWithAddButton> {
   List<String> headers = ['ID', 'Party Name', 'Type', 'Bill Type', 'Value'];
   List<List<String>> rows = [];
@@ -12,6 +15,7 @@ class _TableWithAddButtonState extends State<TableWithAddButton> {
   TextEditingController _controller3 = TextEditingController();
   TextEditingController _controller4 = TextEditingController();
   TextEditingController _controller5 = TextEditingController();
+  final _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +78,22 @@ class _TableWithAddButtonState extends State<TableWithAddButton> {
                 ),
                 actions: [
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      try {
+                        final orders =
+                            await _firestore.collection('orders').add({
+                          'ID': _controller1.text,
+                          'Party Name': _controller2.text,
+                          'Value': _controller5.text,
+                          'Bill type': _controller4.text,
+                          'Type': _controller3.text
+                        });
+                        if (orders != null) {
+                          Navigator.pushNamed(context, HomeScreen.id);
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
                       setState(() {
                         rows.add([
                           _controller1.text,
@@ -99,6 +118,8 @@ class _TableWithAddButtonState extends State<TableWithAddButton> {
                       _controller1.clear();
                       _controller2.clear();
                       _controller3.clear();
+                      _controller4.clear();
+                      _controller5.clear();
                     },
                     child: Text('Cancel'),
                   ),

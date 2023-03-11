@@ -67,7 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1065956452855',
     projectId: 'gfg-applebhe',
     storageBucket: 'gfg-applebhe.appspot.com',
-    iosClientId: '1065956452855-e9ptr3ki64m1l7401pg1t1hllsds05s8.apps.googleusercontent.com',
+    iosClientId:
+        '1065956452855-e9ptr3ki64m1l7401pg1t1hllsds05s8.apps.googleusercontent.com',
     iosBundleId: 'com.example.appleBhe',
   );
 
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1065956452855',
     projectId: 'gfg-applebhe',
     storageBucket: 'gfg-applebhe.appspot.com',
-    iosClientId: '1065956452855-e9ptr3ki64m1l7401pg1t1hllsds05s8.apps.googleusercontent.com',
+    iosClientId:
+        '1065956452855-e9ptr3ki64m1l7401pg1t1hllsds05s8.apps.googleusercontent.com',
     iosBundleId: 'com.example.appleBhe',
   );
 }

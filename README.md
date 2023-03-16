@@ -53,6 +53,7 @@ Ideation for the Hackathon
 
 Main Application
 Testing and pre-release
+Deployment
 Google cloud
 MVP
 Wireframing

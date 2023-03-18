@@ -38,6 +38,8 @@ dependencies:
   firebase_core: ^2.7.1
   firebase_auth: ^4.2.10
   cloud_firestore: ^4.4.4
+  ethereum: ^5.0.2
+  web3dart: ^2.6.1
 
 dev_dependencies:
   flutter_test:

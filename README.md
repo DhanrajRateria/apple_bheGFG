@@ -18,6 +18,11 @@ samples, guidance on mobile development, and a full API reference.
 Hackathon notes-
 AMD EPYC processors and their features
 AMD instances implementation
+N2D
+C2D
+T2D
+Confidential VMs
+
 Google Cloud- Open, pragmatic, trustworthy, smart, scale
 https://www.youtube.com/live/FGsB6rVxh5o?feature=share
 
@@ -59,3 +64,18 @@ MVP
 Wireframing
 Presentation
 Feedback
+
+Instances are virtual machine to perform processing over cloud.
+
+Blockchain-
+    -Ethereum
+    -State
+    -EVM
+    -Accounts
+    -Smart Contracts
+    -Gas
+    -Transactions
+
+-A node access- Google Blockchain node, Alchemy, Infura
+-A smart contract file
+-A simple JS file

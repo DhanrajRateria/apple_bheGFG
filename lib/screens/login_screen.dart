@@ -58,7 +58,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ElevatedButton(
               child: Text(
                 "Log In",
-                style: TextStyle(backgroundColor: Colors.blue),
               ),
               onPressed: () {
                 try {

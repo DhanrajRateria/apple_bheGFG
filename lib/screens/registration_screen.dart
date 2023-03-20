@@ -58,10 +58,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 24.0,
             ),
             ElevatedButton(
-              child: Text(
-                "Register",
-                style: TextStyle(backgroundColor: Colors.blue),
-              ),
+              child: Text("Register"),
               onPressed: () async {
                 try {
                   final newUser = await _auth.createUserWithEmailAndPassword(

@@ -12,27 +12,35 @@ import 'screens/welcome_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() async{
+void main() async {
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
-  
 }
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(initialRoute: WelcomeScreen.id, routes: {
-      HomeScreen.id: (context) => HomeScreen(),
-      WelcomeScreen.id: (context) => WelcomeScreen(),
-      LoginScreen.id: (context) => LoginScreen(),
-      RegistrationScreen.id: (context) => RegistrationScreen(),
-      Financials.id: (context) => Financials(),
-      InventoryScreen.id: (context) => InventoryScreen(),
-      OrderScreen.id: (context) => OrderScreen(),
-      Personnel.id: (context) => Personnel(),
-      LedgerScreen.id: (context) => LedgerScreen(),
-      Location.id: (context) => Location()
-    });
+    return MaterialApp(
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            primary: Color(0xff6C63FF),
+            secondary: Color(0xff6C63FF),
+          ),
+        ),
+        initialRoute: WelcomeScreen.id,
+        routes: {
+          HomeScreen.id: (context) => HomeScreen(),
+          WelcomeScreen.id: (context) => WelcomeScreen(),
+          LoginScreen.id: (context) => LoginScreen(),
+          RegistrationScreen.id: (context) => RegistrationScreen(),
+          Financials.id: (context) => Financials(),
+          InventoryScreen.id: (context) => InventoryScreen(),
+          OrderScreen.id: (context) => OrderScreen(),
+          Personnel.id: (context) => Personnel(),
+          LedgerScreen.id: (context) => LedgerScreen(),
+          Location.id: (context) => Location()
+        });
   }
 }

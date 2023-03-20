@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:apple_bhe/image_buttons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+final _firestore = FirebaseFirestore.instance;
 
 class Personnel extends StatefulWidget {
   static const String id = 'personnel';
@@ -58,6 +61,39 @@ class _PersonnelState extends State<Personnel> {
                     child: Text('Pick Image'),
                   ),
                 ]),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        final personnel =
+                            await _firestore.collection('personnel').add({
+                          'Name': _controller1.text,
+                          'Designation': _controller2.text,
+                        });
+                        if (personnel != null) {
+                          Navigator.pushNamed(context, Personnel.id);
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
+                      setState(() {
+                        
+                      });
+                      Navigator.of(context).pop();
+                      _controller1.clear();
+                      _controller2.clear();
+                    },
+                    child: Text('Add'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      _controller1.clear();
+                      _controller2.clear();
+                    },
+                    child: Text('Cancel'),
+                  ),
+                ]
               );
             });
       }),

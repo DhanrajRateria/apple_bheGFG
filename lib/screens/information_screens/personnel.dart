@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:apple_bhe/image_buttons.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,7 +31,11 @@ class _PersonnelState extends State<Personnel> {
         return null;
       }
 
-      final ref = _storage.ref().child('personnel').child(user.uid).child(DateTime.now().millisecondsSinceEpoch.toString());
+      final ref = _storage
+          .ref()
+          .child('personnel')
+          .child(user.uid)
+          .child(DateTime.now().millisecondsSinceEpoch.toString());
       final uploadTask = ref.putFile(file);
       final snapshot = await uploadTask.whenComplete(() {});
       final url = await snapshot.ref.getDownloadURL();
@@ -47,13 +53,41 @@ class _PersonnelState extends State<Personnel> {
         title: Text("My Team"),
         centerTitle: true,
       ),
-      body: Center(
-        child: ImageButton(
-          imagename: "dhanraj",
-          title: "Dhanraj Rateria",
-          desc: "Founder & CEO",
-          
-        ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _firestore.collection('personnel').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          final personnelList = snapshot.data!.docs
+              .map((doc) => doc.data()! as Map<String, dynamic>)
+              .toList();
+
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 0.75,
+            ),
+            itemCount: personnelList.length,
+            itemBuilder: (context, index) {
+              final personnel = personnelList[index] as Map<String, dynamic>;
+
+              final name = personnel['Name'];
+              final designation = personnel['Designation'];
+              final imageUrl = personnel['ImageUrl'];
+
+              return ImageButton(
+                imagename: imageUrl ?? "",
+                title: name ?? "",
+                desc: designation ?? "",
+              );
+            },
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),

@@ -107,6 +107,9 @@ class _PersonnelState extends State<Personnel> {
                           decoration:
                               InputDecoration(labelText: "Enter Designation"),
                         ),
+                        SizedBox(
+                          height: 50
+                        ),
                         ElevatedButton(
                           onPressed: () async {
                             final pickedFile = await ImagePicker().pickImage(
@@ -126,21 +129,25 @@ class _PersonnelState extends State<Personnel> {
                         ElevatedButton(
                           onPressed: () async {
                             try {
-                              final personnel =
-                                  await _firestore.collection('personnel').add({
-                                'Name': _controller1.text,
-                                'Designation': _controller2.text,
-                              });
-                              if (personnel != null) {
-                                Navigator.pushNamed(context, Personnel.id);
+                              final imageUrl =
+                                  await _uploadImage(File(_image!.path));
+                              final name = _controller1.text.trim();
+                              final designation = _controller2.text.trim();
+                              if (name.isEmpty ||
+                                  designation.isEmpty ||
+                                  imageUrl == null) {
+                                return;
                               }
+
+                              await _firestore.collection('personnel').add({
+                                'Name': name,
+                                'Designation': designation,
+                                'ImageUrl': imageUrl,
+                              });
+                              Navigator.pop(context);
                             } catch (e) {
                               print(e);
                             }
-                            setState(() {});
-                            Navigator.of(context).pop();
-                            _controller1.clear();
-                            _controller2.clear();
                           },
                           child: Text('Add'),
                         ),

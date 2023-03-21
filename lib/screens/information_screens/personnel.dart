@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:apple_bhe/image_buttons.dart';
+import 'package:apple_bhe/image_buttons2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -81,7 +81,7 @@ class _PersonnelState extends State<Personnel> {
               final imageUrl = personnel['ImageUrl'];
 
               return ImageButton(
-                imagename: imageUrl ?? "",
+                imageloc: imageUrl ?? "",
                 title: name ?? "",
                 desc: designation ?? "",
               );

@@ -108,7 +108,7 @@ class _PersonnelState extends State<Personnel> {
                               InputDecoration(labelText: "Enter Designation"),
                         ),
                         SizedBox(
-                          height: 50
+                          height: 50,
                         ),
                         ElevatedButton(
                           onPressed: () async {
@@ -138,16 +138,15 @@ class _PersonnelState extends State<Personnel> {
                                   imageUrl == null) {
                                 return;
                               }
-
                               await _firestore.collection('personnel').add({
                                 'Name': name,
                                 'Designation': designation,
                                 'ImageUrl': imageUrl,
                               });
-                              Navigator.pop(context);
                             } catch (e) {
                               print(e);
                             }
+                            Navigator.pop(context);
                           },
                           child: Text('Add'),
                         ),

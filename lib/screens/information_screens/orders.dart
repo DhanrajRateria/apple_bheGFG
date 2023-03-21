@@ -31,6 +31,10 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("ORDERS"),
+        ),
         body: TableWithAddButton(),
       );
 }

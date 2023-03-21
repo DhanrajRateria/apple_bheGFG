@@ -3,8 +3,11 @@ import 'package:apple_bhe/image_buttons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 final _firestore = FirebaseFirestore.instance;
+final _auth = FirebaseAuth.instance;
+final _storage = FirebaseStorage.instance;
 
 class Personnel extends StatefulWidget {
   static const String id = 'personnel';
@@ -18,6 +21,24 @@ class _PersonnelState extends State<Personnel> {
   TextEditingController _controller2 = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
+
+  Future<String?> _uploadImage(File file) async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        return null;
+      }
+
+      final ref = _storage.ref().child('personnel').child(user.uid).child(DateTime.now().millisecondsSinceEpoch.toString());
+      final uploadTask = ref.putFile(file);
+      final snapshot = await uploadTask.whenComplete(() {});
+      final url = await snapshot.ref.getDownloadURL();
+      return url;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

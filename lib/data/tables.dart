@@ -9,13 +9,36 @@ class TableWithAddButton extends StatefulWidget {
 
 class _TableWithAddButtonState extends State<TableWithAddButton> {
   List<String> headers = ['ID', 'Party Name', 'Type', 'Bill Type', 'Value'];
-  List<List<String>> rows = [];
+  List<List<dynamic>> rows = [];
+
   TextEditingController _controller1 = TextEditingController();
   TextEditingController _controller2 = TextEditingController();
   TextEditingController _controller3 = TextEditingController();
   TextEditingController _controller4 = TextEditingController();
   TextEditingController _controller5 = TextEditingController();
-  final _firestore = FirebaseFirestore.instance;
+  late FirebaseFirestore _firestore;
+
+  @override
+  void initState() {
+    super.initState();
+    _firestore = FirebaseFirestore.instance;
+    fetchDocuments();
+  }
+
+  void fetchDocuments() async {
+    final querySnapshot = await _firestore.collection('orders').get();
+    setState(() {
+      rows = querySnapshot.docs
+          .map((doc) => [
+                doc.data()['ID'],
+                doc.data()['Party Name'],
+                doc.data()['Type'],
+                doc.data()['Bill type'],
+                doc.data()['Value'],
+              ])
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

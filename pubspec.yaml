@@ -42,6 +42,9 @@ dependencies:
   web3dart: ^2.6.1
   image_picker: ^0.8.7
   firebase_storage: ^11.0.16
+  google_maps_flutter: ^2.2.5
+  location: ^4.4.0
+  geolocator: ^9.0.2
 
 dev_dependencies:
   flutter_test:

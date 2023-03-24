@@ -1,4 +1,5 @@
 import 'package:apple_bhe/screens/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -17,15 +18,30 @@ class _TableWithAddButtonState extends State<TableWithAddButton> {
   TextEditingController _controller4 = TextEditingController();
   TextEditingController _controller5 = TextEditingController();
   late FirebaseFirestore _firestore;
-
+  final _auth = FirebaseAuth.instance;
+  late User loggedInUser;
   @override
   void initState() {
     super.initState();
+    getCurrentUser();
     _firestore = FirebaseFirestore.instance;
     fetchDocuments();
   }
 
+  void getCurrentUser() async {
+    try {
+      final user = await _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        print(loggedInUser.email);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   void fetchDocuments() async {
+    final userId = loggedInUser.email;
     final querySnapshot = await _firestore.collection('orders').get();
     setState(() {
       rows = querySnapshot.docs
@@ -105,6 +121,7 @@ class _TableWithAddButtonState extends State<TableWithAddButton> {
                       try {
                         final orders =
                             await _firestore.collection('orders').add({
+                          'email': loggedInUser.email,
                           'ID': _controller1.text,
                           'Party Name': _controller2.text,
                           'Value': _controller5.text,

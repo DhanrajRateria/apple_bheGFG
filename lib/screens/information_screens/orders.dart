@@ -12,6 +12,7 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   final _auth = FirebaseAuth.instance;
   late User loggedInUser;
+  @override
   void initState() {
     super.initState();
     getCurrentUser();
@@ -29,7 +30,6 @@ class _OrderScreenState extends State<OrderScreen> {
     }
   }
 
-  @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           centerTitle: true,

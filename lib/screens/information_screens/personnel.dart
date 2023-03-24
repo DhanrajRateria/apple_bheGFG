@@ -48,13 +48,17 @@ class _PersonnelState extends State<Personnel> {
 
   @override
   Widget build(BuildContext context) {
+    final user = _auth.currentUser;
     return Scaffold(
       appBar: AppBar(
         title: Text("My Team"),
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('personnel').snapshots(),
+        stream: _firestore
+            .collection('personnel')
+            .where('email', isEqualTo: user?.email)
+            .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -139,6 +143,7 @@ class _PersonnelState extends State<Personnel> {
                                 return;
                               }
                               await _firestore.collection('personnel').add({
+                                'email': user?.email,
                                 'Name': name,
                                 'Designation': designation,
                                 'ImageUrl': imageUrl,

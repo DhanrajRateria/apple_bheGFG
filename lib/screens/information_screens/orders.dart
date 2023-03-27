@@ -120,7 +120,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   Future<void> addRow(String userEmail) async {
-    await firestore.collection('inventory').add({
+    await firestore.collection('orders').add({
       'id': _idController.text,
       'name': _nameController.text,
       'bill type': _typeController.text,

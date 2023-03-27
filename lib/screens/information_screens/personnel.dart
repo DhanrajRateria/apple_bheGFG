@@ -48,7 +48,14 @@ class _PersonnelState extends State<Personnel> {
 
   @override
   Widget build(BuildContext context) {
-    final user = _auth.currentUser;
+    final user = FirebaseAuth.instance.currentUser;
+    final userEmail = user?.email;
+
+    if (userEmail == null) {
+      return Center(
+        child: Text('User not signed in.'),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("My Team"),
@@ -57,12 +64,17 @@ class _PersonnelState extends State<Personnel> {
       body: StreamBuilder<QuerySnapshot>(
         stream: _firestore
             .collection('personnel')
-            .where('email', isEqualTo: user?.email)
-            .snapshots(),
+            .where('email', isEqualTo: userEmail)
+            .snapshots(includeMetadataChanges: true),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Text('No data available.'),
             );
           }
           final personnelList = snapshot.data!.docs
@@ -143,7 +155,7 @@ class _PersonnelState extends State<Personnel> {
                                 return;
                               }
                               await _firestore.collection('personnel').add({
-                                'email': user?.email,
+                                'email': userEmail,
                                 'Name': name,
                                 'Designation': designation,
                                 'ImageUrl': imageUrl,

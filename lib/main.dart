@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           OrderScreen.id: (context) => OrderScreen(),
           Personnel.id: (context) => Personnel(),
           LedgerScreen.id: (context) => LedgerScreen(),
-          Location.id: (context) => Location()
+          LocationScreen.id: (context) => LocationScreen()
         });
   }
 }

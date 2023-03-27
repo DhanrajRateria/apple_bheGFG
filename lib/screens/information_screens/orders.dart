@@ -47,23 +47,27 @@ class _OrderScreenState extends State<OrderScreen> {
                 child: Text('No data available.'),
               );
             }
-            return DataTable(
-              columns: [
-                DataColumn(label: Text('ID')),
-                DataColumn(label: Text('Name')),
-                DataColumn(label: Text('Type')),
-                DataColumn(label: Text('Value')),
-              ],
-              rows: snapshot.data!.docs.map((doc) {
-                return DataRow(
-                  cells: [
-                    DataCell(Text(doc['id'])),
-                    DataCell(Text(doc['name'])),
-                    DataCell(Text(doc['bill type'])),
-                    DataCell(Text(doc['value'])),
-                  ],
-                );
-              }).toList(),
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('ID')),
+                  DataColumn(label: Text('Name')),
+                  DataColumn(label: Text('Type')),
+                  DataColumn(label: Text('Value')),
+                ],
+                rows: snapshot.data!.docs.map((doc) {
+                  return DataRow(
+                    cells: [
+                      DataCell(Text(doc['id'])),
+                      DataCell(Text(doc['name'])),
+                      DataCell(Text(doc['bill type'])),
+                      DataCell(Text(doc['value'])),
+                    ],
+                  );
+                }).toList(),
+              ),
             );
           },
         ),

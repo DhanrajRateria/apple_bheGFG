@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           title: "Track",
                           imagename: "location",
                           onPressed: () {
-                            Navigator.pushNamed(context, Location.id);
+                            Navigator.pushNamed(context, LocationScreen.id);
                           }),
                     ]),
               ),

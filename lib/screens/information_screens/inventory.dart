@@ -47,6 +47,9 @@ class _InventoryScreen extends State<InventoryScreen> {
               );
             }
             return DataTable(
+              
+              headingRowColor:
+                  MaterialStateColor.resolveWith((states) => Colors.white),
               columns: [
                 DataColumn(label: Text('ID')),
                 DataColumn(label: Text('Name')),
@@ -57,14 +60,21 @@ class _InventoryScreen extends State<InventoryScreen> {
               rows: snapshot.data!.docs.map((doc) {
                 return DataRow(
                   cells: [
-                    DataCell(Text(doc['id'])),
-                    DataCell(Text(doc['name'])),
-                    DataCell(Text(doc['quantity'])),
-                    DataCell(Text(doc['price'])),
+                    DataCell(Text(
+                      doc['id'],
+                      style: TextStyle(color: Colors.white),
+                    )),
+                    DataCell(Text(doc['name'],
+                        style: TextStyle(color: Colors.white))),
+                    DataCell(Text(doc['quantity'],
+                        style: TextStyle(color: Colors.white))),
+                    DataCell(Text(doc['price'],
+                        style: TextStyle(color: Colors.white))),
                     DataCell(
                       Row(
                         children: [
                           IconButton(
+                            color: Colors.white,
                             icon: Icon(Icons.edit),
                             onPressed: () {
                               setState(() {
@@ -77,6 +87,7 @@ class _InventoryScreen extends State<InventoryScreen> {
                             },
                           ),
                           IconButton(
+                            color: Colors.white,
                             icon: Icon(Icons.delete),
                             onPressed: () {
                               setState(() {
@@ -95,6 +106,7 @@ class _InventoryScreen extends State<InventoryScreen> {
           },
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Color(0xff706993),
           onPressed: () {
             showDialog(
               context: context,
@@ -118,8 +130,7 @@ class _InventoryScreen extends State<InventoryScreen> {
                         ),
                         TextField(
                           controller: _priceController,
-                          decoration:
-                              InputDecoration(labelText: 'Price'),
+                          decoration: InputDecoration(labelText: 'Price'),
                         ),
                       ],
                     ),

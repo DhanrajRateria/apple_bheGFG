@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:web3dart/credentials.dart';
+import 'package:web3dart/web3dart.dart' as web3dart;
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:http/http.dart';
 
 class OrderScreen extends StatefulWidget {
   static const String id = 'order_screen';
@@ -16,7 +22,35 @@ class _OrderScreenState extends State<OrderScreen> {
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _valueController = TextEditingController();
   String? selectedDocId;
+  final web3 = web3dart.Web3Client('http://localhost:7545', Client());
+  late final web3dart.Credentials credentials;
+  late final web3dart.DeployedContract contract;
+  late final web3dart.ContractFunction addOrder;
   @override
+  void initState() {
+    super.initState();
+    loadCredentials();
+  }
+
+  @override
+  void dispose() {
+    web3.dispose();
+    super.dispose();
+  }
+
+  Future<void> loadCredentials() async {
+    final privateKey = await rootBundle.loadString('assets/private_key.txt');
+    credentials = await EthPrivateKey.fromHex(privateKey.trim());
+
+    final abi = await rootBundle.loadString('assets/blockchain.abi');
+    final contractAddress = '0xabc...'; // address of your deployed contract
+    contract = web3dart.DeployedContract(
+      web3dart.ContractAbi.fromJson(abi, 'Blockchain'),
+      web3dart.EthereumAddress.fromHex(contractAddress),
+    );
+    addOrder = contract.function('addOrder');
+  }
+
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     final userEmail = user?.email;
@@ -131,6 +165,27 @@ class _OrderScreenState extends State<OrderScreen> {
       'value': _valueController.text,
       'user_email': userEmail,
     });
+    final transaction = web3dart.Transaction.callContract(
+      contract: contract,
+      function: addOrder,
+      parameters: [
+        Utf8Encoder().convert(_idController.text),
+        Utf8Encoder().convert(_nameController.text),
+        Utf8Encoder().convert(_typeController.text),
+        _valueController.text,
+      ],
+      from: await credentials.address,
+    );
+
+    final gas = await web3.estimateGas();
+    final gasPrice = await web3.getGasPrice();
+    final transactionValue = web3dart.EtherAmount.zero();
+    final signedTransaction = await web3.signTransaction(
+      credentials, transaction
+    );
+
+    await web3.sendTransaction(credentials,signedTransaction as web3dart.Transaction);
+
     setState(() {
       _idController.text = '';
       _nameController.text = '';

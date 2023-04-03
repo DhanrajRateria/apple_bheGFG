@@ -85,6 +85,8 @@ class _OrderScreenState extends State<OrderScreen> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: DataTable(
+                headingRowColor:
+                    MaterialStateColor.resolveWith((states) => Colors.white),
                 columns: [
                   DataColumn(label: Text('ID')),
                   DataColumn(label: Text('Name')),
@@ -94,10 +96,22 @@ class _OrderScreenState extends State<OrderScreen> {
                 rows: snapshot.data!.docs.map((doc) {
                   return DataRow(
                     cells: [
-                      DataCell(Text(doc['id'])),
-                      DataCell(Text(doc['name'])),
-                      DataCell(Text(doc['bill type'])),
-                      DataCell(Text(doc['value'])),
+                      DataCell(Text(
+                        doc['id'],
+                        style: TextStyle(color: Colors.white),
+                      )),
+                      DataCell(Text(
+                        doc['name'],
+                        style: TextStyle(color: Colors.white),
+                      )),
+                      DataCell(Text(
+                        doc['bill type'],
+                        style: TextStyle(color: Colors.white),
+                      )),
+                      DataCell(Text(
+                        doc['value'],
+                        style: TextStyle(color: Colors.white),
+                      )),
                     ],
                   );
                 }).toList(),
@@ -180,11 +194,11 @@ class _OrderScreenState extends State<OrderScreen> {
     final gas = await web3.estimateGas();
     final gasPrice = await web3.getGasPrice();
     final transactionValue = web3dart.EtherAmount.zero();
-    final signedTransaction = await web3.signTransaction(
-      credentials, transaction
-    );
+    final signedTransaction =
+        await web3.signTransaction(credentials, transaction);
 
-    await web3.sendTransaction(credentials,signedTransaction as web3dart.Transaction);
+    await web3.sendTransaction(
+        credentials, signedTransaction as web3dart.Transaction);
 
     setState(() {
       _idController.text = '';

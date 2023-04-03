@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_web3_provider/ethers.dart';
 import 'package:provider/provider.dart' as prov;
 import 'package:apple_bhe/link_contract.dart';
 

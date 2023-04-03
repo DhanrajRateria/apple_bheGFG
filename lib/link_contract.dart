@@ -21,8 +21,16 @@ class LinkSmartContract extends ChangeNotifier {
 
   late DeployedContract _contract;
 
-  late ContractFunction _fullName;
-  late ContractFunction _setName;
+  late ContractFunction _name;
+  late ContractFunction _id;
+  late ContractFunction _type;
+  late ContractFunction _value;
+  late ContractFunction _set;
+
+  late String name;
+  late String id;
+  late String type;
+  late String value;
 
   //it's used to check the contract state
   bool isLoading = true;
@@ -48,7 +56,8 @@ class LinkSmartContract extends ChangeNotifier {
 
   Future<void> getAbi() async {
     // Reading the contract abi
-    String abiStringFile = await rootBundle.loadString("assets/blockchain.abi");
+    String abiStringFile =
+        await rootBundle.loadString("assets/blockchain.json");
     var jsonAbi = jsonDecode(abiStringFile);
     _abiCode = jsonEncode(jsonAbi["abi"]);
 
@@ -64,20 +73,32 @@ class LinkSmartContract extends ChangeNotifier {
   Future<void> getDeployedContract() async {
     // Telling Web3dart where our contract is declared.
     _contract = DeployedContract(
-        ContractAbi.fromJson(_abiCode, "SmartContract"), _contractAddress);
+        ContractAbi.fromJson(_abiCode, "Blockchain"), _contractAddress);
 
     // Extracting the functions, declared in contract.
-    _fullName = _contract.function("FullName");
-    _setName = _contract.function("setName");
+    _name = _contract.function("name");
+    _id = _contract.function("id");
+    _type = _contract.function("type");
+    _value = _contract.function("value");
+    _set = _contract.function("set");
     getName();
   }
 
   Future<void> getName() async {
-    // Getting the current name declared in the smart contract.
-    var currentName = await _client
-        .call(contract: _contract, function: _fullName, params: []);
+    List orderName =
+        await _client.call(contract: _contract, function: _name, params: []);
+    List orderId =
+        await _client.call(contract: _contract, function: _id, params: []);
+    List orderValue =
+        await _client.call(contract: _contract, function: _value, params: []);
+    List orderType =
+        await _client.call(contract: _contract, function: _type, params: []);
+    name = orderName[0];
+    id = orderId[0].toString();
+    value = orderValue[0].toString();
+    type = orderType[0].toString();
 
-    deployedName = currentName[0];
+    print("$name , $id");
     isLoading = false;
     notifyListeners();
   }
@@ -91,7 +112,7 @@ class LinkSmartContract extends ChangeNotifier {
         _credentials,
         Transaction.callContract(
           contract: _contract,
-          function: _setName,
+          function: _set,
           parameters: [nameToSet, id, value, type],
         ));
     getName();

@@ -11,6 +11,8 @@ import 'screens/registration_screen.dart';
 import 'screens/welcome_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'package:apple_bhe/link_contract.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +26,9 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return ChangeNotifierProvider(
+      create: (_) => LinkSmartContract(),
+      child: MaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xff331E38),
         appBarTheme: AppBarTheme(backgroundColor: Color(0xff706993)),
@@ -46,6 +50,6 @@ class MyApp extends StatelessWidget {
         LedgerScreen.id: (context) => LedgerScreen(),
         LocationScreen.id: (context) => LocationScreen()
       },
-    );
+    ),);
   }
 }

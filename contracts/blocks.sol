@@ -33,7 +33,7 @@ contract Blockchain {
                 block.timestamp
             )
         );
-        Block memory block = Block(
+        Block memory _block = Block(
             blocks.length,
             orderId,
             orderName,
@@ -43,6 +43,6 @@ contract Blockchain {
             hash,
             block.timestamp
         );
-        blocks.push(block);
+        blocks.push(_block);
     }
 }

@@ -107,6 +107,7 @@ class _OrderScreenState extends State<OrderScreen> {
           },
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Color(0xff706993),
           onPressed: () {
             showDialog(
               context: context,

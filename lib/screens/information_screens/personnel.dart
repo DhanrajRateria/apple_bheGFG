@@ -106,6 +106,7 @@ class _PersonnelState extends State<Personnel> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xff706993),
           child: Icon(Icons.add),
           onPressed: () {
             showDialog(

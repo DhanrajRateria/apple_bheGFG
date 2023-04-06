@@ -21,6 +21,18 @@ class _OrderScreenState extends State<OrderScreen> {
   String? selectedDocId;
   late LinkSmartContract linkSmartContract;
   late List<Block> blocks;
+
+  handleCreateBlock() async {
+    Block block = new Block(
+      orderId: _idController.text,
+      orderName: _nameController.text,
+      billType: _typeController.text,
+      value: _valueController.text,
+      created: new DateTime.now(),
+    );
+    await linkSmartContract.addBlock(block);
+  }
+
   @override
   Widget build(BuildContext context) {
     linkSmartContract =
@@ -154,7 +166,7 @@ class _OrderScreenState extends State<OrderScreen> {
       'value': _valueController.text,
       'user_email': userEmail,
     });
-
+    handleCreateBlock();
     setState(() {
       _idController.text = '';
       _nameController.text = '';

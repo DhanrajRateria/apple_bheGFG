@@ -29,27 +29,29 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => LinkSmartContract(),
       child: MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xff331E38),
-        appBarTheme: AppBarTheme(backgroundColor: Color(0xff706993)),
-        fontFamily: 'Oswald',
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: Color(0xff6C63FF),
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: Color(0xff331E38),
+          appBarTheme: AppBarTheme(backgroundColor: Color(0xff706993)),
+          fontFamily: 'Oswald',
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            primary: Color(0xff6C63FF),
+          ),
         ),
+        initialRoute: WelcomeScreen.id,
+        routes: {
+          HomeScreen.id: (context) => HomeScreen(),
+          WelcomeScreen.id: (context) => WelcomeScreen(),
+          LoginScreen.id: (context) => LoginScreen(),
+          RegistrationScreen.id: (context) => RegistrationScreen(),
+          Financials.id: (context) => Financials(),
+          InventoryScreen.id: (context) => InventoryScreen(),
+          OrderScreen.id: (context) => OrderScreen(),
+          Personnel.id: (context) => Personnel(),
+          LedgerScreen.id: (context) => LedgerScreen(),
+          LocationScreen.id: (context) => LocationScreen()
+        },
       ),
-      initialRoute: WelcomeScreen.id,
-      routes: {
-        HomeScreen.id: (context) => HomeScreen(),
-        WelcomeScreen.id: (context) => WelcomeScreen(),
-        LoginScreen.id: (context) => LoginScreen(),
-        RegistrationScreen.id: (context) => RegistrationScreen(),
-        Financials.id: (context) => Financials(),
-        InventoryScreen.id: (context) => InventoryScreen(),
-        OrderScreen.id: (context) => OrderScreen(),
-        Personnel.id: (context) => Personnel(),
-        LedgerScreen.id: (context) => LedgerScreen(),
-        LocationScreen.id: (context) => LocationScreen()
-      },
-    ),);
+    );
   }
 }

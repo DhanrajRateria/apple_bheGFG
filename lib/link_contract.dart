@@ -86,7 +86,6 @@ class LinkSmartContract extends ChangeNotifier {
       if (temp[1] != "")
         blocks.add(
           Block(
-            id: temp[0].toString(),
             orderId: temp[1],
             orderName: temp[2],
             billType: temp[3],

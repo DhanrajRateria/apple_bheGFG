@@ -7,7 +7,6 @@ class Block {
   late DateTime created;
 
   Block({
-    required this.id,
     required this.created,
     required this.value,
     required this.orderId,

@@ -7,6 +7,19 @@ import 'package:web_socket_channel/io.dart';
 import 'block.dart';
 
 class LinkSmartContract extends ChangeNotifier {
+  /*
+  Note on _rpcUrl & _wsUrl.
+  To use with android emulator use:
+  - Change ganache server hostname to Loopback-Pseudo Interface 1
+    final String _rpcUrl = "http://192.168.0.185:7545";
+    final String _wsUrl = "ws://192.168.0.185:7545/";
+  To use with real device:
+  - Change ganache server hostname to Wifi
+  - Copy new RPC Server url here:
+    final String _rpcUrl = "http://10.0.2.2:7545";
+    final String _wsUrl = "ws://10.0.2.2:7545/";
+   */
+
   final String _rpcUrl = "http://127.0.0.1:7545";
   final String _wsUrl = "ws://127.0.0.1:7545/";
   final String _privateKey =

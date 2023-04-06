@@ -46,62 +46,113 @@ class _InventoryScreen extends State<InventoryScreen> {
                 child: Text('No data available.'),
               );
             }
-            return DataTable(
-              
-              headingRowColor:
-                  MaterialStateColor.resolveWith((states) => Colors.white),
-              columns: [
-                DataColumn(label: Text('ID')),
-                DataColumn(label: Text('Name')),
-                DataColumn(label: Text('Quantity')),
-                DataColumn(label: Text('Price')),
-                DataColumn(label: Text('Actions')),
-              ],
-              rows: snapshot.data!.docs.map((doc) {
-                return DataRow(
-                  cells: [
-                    DataCell(Text(
-                      doc['id'],
-                      style: TextStyle(color: Colors.white),
-                    )),
-                    DataCell(Text(doc['name'],
-                        style: TextStyle(color: Colors.white))),
-                    DataCell(Text(doc['quantity'],
-                        style: TextStyle(color: Colors.white))),
-                    DataCell(Text(doc['price'],
-                        style: TextStyle(color: Colors.white))),
-                    DataCell(
-                      Row(
-                        children: [
-                          IconButton(
-                            color: Colors.white,
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              setState(() {
-                                selectedDocId = doc.id;
-                                _idController.text = doc['id'];
-                                _nameController.text = doc['name'];
-                                _quantityController.text = doc['quantity'];
-                                _priceController.text = doc['price'];
-                              });
-                            },
-                          ),
-                          IconButton(
-                            color: Colors.white,
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              setState(() {
-                                selectedDocId = doc.id;
-                              });
-                              deleteRow();
-                            },
-                          ),
-                        ],
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                headingRowColor:
+                    MaterialStateColor.resolveWith((states) => Colors.white),
+                columns: [
+                  DataColumn(label: Text('ID')),
+                  DataColumn(label: Text('Name')),
+                  DataColumn(label: Text('Quantity')),
+                  DataColumn(label: Text('Price')),
+                  DataColumn(label: Text('Actions')),
+                ],
+                rows: snapshot.data!.docs.map((doc) {
+                  return DataRow(
+                    cells: [
+                      DataCell(Text(
+                        doc['id'],
+                        style: TextStyle(color: Colors.white),
+                      )),
+                      DataCell(Text(doc['name'],
+                          style: TextStyle(color: Colors.white))),
+                      DataCell(Text(doc['quantity'],
+                          style: TextStyle(color: Colors.white))),
+                      DataCell(Text(doc['price'],
+                          style: TextStyle(color: Colors.white))),
+                      DataCell(
+                        Row(
+                          children: [
+                            IconButton(
+                              color: Colors.white,
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                setState(() {
+                                  selectedDocId = doc.id;
+                                  _idController.text = doc['id'];
+                                  _nameController.text = doc['name'];
+                                  _quantityController.text = doc['quantity'];
+                                  _priceController.text = doc['price'];
+                                });
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Edit Row'),
+                                      content: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            TextField(
+                                              controller: _idController,
+                                              decoration: InputDecoration(
+                                                  labelText: 'ID'),
+                                            ),
+                                            TextField(
+                                              controller: _nameController,
+                                              decoration: InputDecoration(
+                                                  labelText: 'Name'),
+                                            ),
+                                            TextField(
+                                              controller: _quantityController,
+                                              decoration: InputDecoration(
+                                                  labelText: 'Quantity'),
+                                            ),
+                                            TextField(
+                                              controller: _priceController,
+                                              decoration: InputDecoration(
+                                                  labelText: 'Price'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            editRow();
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Save'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                            IconButton(
+                              color: Colors.white,
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                setState(() {
+                                  selectedDocId = doc.id;
+                                });
+                                deleteRow();
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              }).toList(),
+                    ],
+                  );
+                }).toList(),
+              ),
             );
           },
         ),

@@ -9,7 +9,7 @@ module.exports = {
       websocket: true,
     },
   },
-  contract_build_directory: "./src/abis",
+  contract_build_directory: "./contracts/build/contracts/Blockchain.json",
   compilers: {
     solc: {
       optimizer: {

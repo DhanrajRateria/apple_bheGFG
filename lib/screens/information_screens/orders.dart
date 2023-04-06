@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart' as prov;
 import 'package:apple_bhe/link_contract.dart';
+import 'package:apple_bhe/block.dart';
 
 class OrderScreen extends StatefulWidget {
   static const String id = 'order_screen';
@@ -18,9 +19,13 @@ class _OrderScreenState extends State<OrderScreen> {
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _valueController = TextEditingController();
   String? selectedDocId;
-
+  late LinkSmartContract linkSmartContract;
+  late List<Block> blocks;
+  @override
   Widget build(BuildContext context) {
-    var contractLink = prov.Provider.of<LinkSmartContract>(context);
+    linkSmartContract =
+        prov.Provider.of<LinkSmartContract>(context, listen: true);
+    blocks = linkSmartContract.blocks;
     final user = FirebaseAuth.instance.currentUser;
     final userEmail = user?.email;
 
@@ -40,6 +45,7 @@ class _OrderScreenState extends State<OrderScreen> {
               .where('user_email', isEqualTo: userEmail)
               .snapshots(includeMetadataChanges: true),
           builder: (context, snapshot) {
+            linkSmartContract.isLoading;
             if (!snapshot.hasData) {
               return Center(
                 child: CircularProgressIndicator(),
@@ -126,11 +132,6 @@ class _OrderScreenState extends State<OrderScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        contractLink.setDetails(
-                            _nameController.text,
-                            _idController.text,
-                            _valueController.text,
-                            _typeController.text);
                         addRow(userEmail);
                         Navigator.of(context).pop();
                       },

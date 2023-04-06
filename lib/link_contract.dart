@@ -4,13 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:dart_web3/dart_web3.dart';
 import 'package:web_socket_channel/io.dart';
+import 'block.dart';
 
 class LinkSmartContract extends ChangeNotifier {
-  final String _rpcURl = "http://127.0.0.1:7545";
-  final String _wsURl = "ws://127.0.0.1:7545/";
+  final String _rpcUrl = "http://127.0.0.1:7545";
+  final String _wsUrl = "ws://127.0.0.1:7545/";
   final String _privateKey =
       "0xe2f83c920fe2eb8b9088dd48325993b4f6364f4dcf30122b8b0f9d04336b22a2";
 
+  List<Block> blocks = [];
+  late int blockCount;
   late Web3Client _client;
 
   late String _abiCode;
@@ -20,12 +23,10 @@ class LinkSmartContract extends ChangeNotifier {
   late Credentials _credentials;
 
   late DeployedContract _contract;
-
-  late ContractFunction _name;
-  late ContractFunction _id;
-  late ContractFunction _type;
-  late ContractFunction _value;
-  late ContractFunction _set;
+  late ContractFunction _blocksCount;
+  late ContractFunction _blocks;
+  late ContractFunction _addBlock;
+  late ContractEvent _blockAddedEvent;
 
   late String name;
   late String id;
@@ -38,83 +39,84 @@ class LinkSmartContract extends ChangeNotifier {
   String? deployedName;
 
   LinkSmartContract() {
-    initialize();
+    init();
   }
 
-  initialize() async {
-    // establish a connection to the Ethereum RPC node. The socketConnector
-    // property allows more efficient event streams over websocket instead of
-    // http-polls. However, the socketConnector property is experimental.
-    _client = Web3Client(_rpcURl, Client(), socketConnector: () {
-      return IOWebSocketChannel.connect(_wsURl).cast<String>();
+  init() async {
+    _client = Web3Client(_rpcUrl, Client(), socketConnector: () {
+      return IOWebSocketChannel.connect(_wsUrl).cast<String>();
     });
-
     await getAbi();
-    await getCredentials();
+    await getCreadentials();
     await getDeployedContract();
   }
 
   Future<void> getAbi() async {
-    // Reading the contract abi
-    String abiStringFile =
-        await rootBundle.loadString("assets/blockchain.json");
+    String abiStringFile = await rootBundle
+        .loadString("contracts/build/contracts/Blockchain.json");
     var jsonAbi = jsonDecode(abiStringFile);
-    _abiCode = jsonEncode(jsonAbi["abi"]);
-
+    _abiCode = jsonEncode(jsonAbi['abi']);
     _contractAddress =
         EthereumAddress.fromHex(jsonAbi["networks"]["5777"]["address"]);
   }
 
-  Future<void> getCredentials() async {
-    _credentials = EthPrivateKey.fromHex(_privateKey);
-    // print(_credentials);
+  Future<void> getCreadentials() async {
+    _credentials = await EthPrivateKey.fromHex(_privateKey);
   }
 
   Future<void> getDeployedContract() async {
-    // Telling Web3dart where our contract is declared.
     _contract = DeployedContract(
         ContractAbi.fromJson(_abiCode, "Blockchain"), _contractAddress);
-
-    // Extracting the functions, declared in contract.
-    _name = _contract.function("name");
-    _id = _contract.function("id");
-    _type = _contract.function("type");
-    _value = _contract.function("value");
-    _set = _contract.function("set");
-    getName();
+    _blocksCount = _contract.function("blocksCount");
+    _blocks = _contract.function("blocks");
+    _addBlock = _contract.function("addBlock");
+    _blockAddedEvent = _contract.event("BlockAdded");
+    await getBlocks();
   }
 
-  Future<void> getName() async {
-    List orderName =
-        await _client.call(contract: _contract, function: _name, params: []);
-    List orderId =
-        await _client.call(contract: _contract, function: _id, params: []);
-    List orderValue =
-        await _client.call(contract: _contract, function: _value, params: []);
-    List orderType =
-        await _client.call(contract: _contract, function: _type, params: []);
-    name = orderName[0];
-    id = orderId[0].toString();
-    value = orderValue[0].toString();
-    type = orderType[0].toString();
-
-    print("$name , $id");
+  getBlocks() async {
+    List notesList = await _client
+        .call(contract: _contract, function: _blocksCount, params: []);
+    BigInt totalNotes = notesList[0];
+    blockCount = totalNotes.toInt();
+    blocks.clear();
+    for (int i = 0; i < blockCount; i++) {
+      var temp = await _client.call(
+          contract: _contract, function: _blocks, params: [BigInt.from(i)]);
+      if (temp[1] != "")
+        blocks.add(
+          Block(
+            id: temp[0].toString(),
+            orderId: temp[1],
+            orderName: temp[2],
+            billType: temp[3],
+            value: temp[4],
+            created:
+                DateTime.fromMillisecondsSinceEpoch(temp[5].toInt() * 1000),
+          ),
+        );
+    }
     isLoading = false;
     notifyListeners();
   }
 
-  Future<void> setDetails(
-      String nameToSet, String id, String value, String type) async {
-    // Setting the name to nameToSet(name defined by user)
+  addBlock(Block block) async {
     isLoading = true;
     notifyListeners();
     await _client.sendTransaction(
-        _credentials,
-        Transaction.callContract(
-          contract: _contract,
-          function: _set,
-          parameters: [nameToSet, id, value, type],
-        ));
-    getName();
+      _credentials,
+      Transaction.callContract(
+        contract: _contract,
+        function: _addBlock,
+        parameters: [
+          block.orderId,
+          block.orderName,
+          block.billType,
+          block.value,
+          BigInt.from(block.created.millisecondsSinceEpoch),
+        ],
+      ),
+    );
+    await getBlocks();
   }
 }

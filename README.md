@@ -11,12 +11,7 @@ Solve for India Hackathon
 Ramaiah Institute of Tecnology
 Dhanraj Rateria
 
-Hackathon notes-
-AMD EPYC processors and their features
-AMD instances implementation
-N2D
-C2D
-T2D
-Confidential VMs
+Theme- Blockchain(Includes Fin-tech)
 
-Google Cloud- Open, pragmatic, trustworthy, smart, scale
+VYAPARI- A supply-chain cum buisness management app, built on the secure principles of blockchain technology.
+The app lets you manage your inventory, personnel, orders, transactions

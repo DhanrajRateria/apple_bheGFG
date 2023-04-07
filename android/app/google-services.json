@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1065956452855",
+    "project_id": "gfg-applebhe",
+    "storage_bucket": "gfg-applebhe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065956452855:android:c205a3d64e66698b9566f2",
+        "android_client_info": {
+          "package_name": "com.example.apple_bhe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1065956452855-q96l9uedt0qc0l1vuvjrsj76vjcbv004.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVxgMiMMNIi9hqoklFbMszemsVWHFGURA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1065956452855-q96l9uedt0qc0l1vuvjrsj76vjcbv004.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

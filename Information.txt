@@ -11,3 +11,93 @@ Security: Blockchain transactions are secured using advanced cryptographic techn
 Efficiency: Blockchain transactions can be processed faster and more efficiently than traditional database systems, which can be slow and resource-intensive.
 
 Overall, storing transaction data in a blockchain provides a more secure, transparent, and efficient way of recording and verifying transactions, making it ideal for applications that require high levels of trust and security, such as financial transactions, supply chain management, and voting systems.
+
+
+
+
+
+Google Cloud orientation-
+    ->Themes
+        -Agrotech
+        -Fintech
+        -Sports and Fitness tech
+        -Healthcare
+        -Blockchain(Chosen)
+    ->Points
+        -Working project
+        -Innovation
+        -Technical complexity
+        -Social impact
+        -Commercializtion
+    -> Tools
+        -Postamn API
+        -Dbeaver
+        -Firefox developer edition
+        -Mongo DB
+        -DB diagram.io
+        -MDN web docs
+        -AMD instances to run or host the application
+
+Ideation for the Hackathon
+    ->I can win
+    ->Ideas need to be thought through
+    ->Validate concepts
+    ->Know your audience
+    ->Right approach
+    ->Time for the presenation
+
+Main Application
+Testing and pre-release
+Deployment
+Google cloud
+MVP
+Wireframing
+Presentation
+Feedback
+
+Instances are virtual machine to perform processing over cloud.
+
+Blockchain-
+    -Ethereum
+    -State
+    -EVM
+    -Accounts
+    -Smart Contracts
+    -Gas
+    -Transactions
+
+-A node access- Google Blockchain node, Alchemy, Infura
+-A smart contract file
+-A simple JS file
+
+Pitching and Demonstration-
+ 
+As we race to the finish line for the first round, make sure you go through the following checklist.
+
+MUST HAVES
+ 
+Your project should be aligned with one of the themes of the hackathon, i.e (Health-Tech, AgroTech, Blockchain, FinTech, Fitness & Sports)
+
+All participating teams must include Google Cloud services in their projects.
+
+It is mandatory for all teams to include AMD instances in their projects.
+
+HOW TO SUBMIT ?
+
+Project Title: Your project should have a descriptive title that summarizes your idea.
+
+Project Description: Each team is required to submit a project description of up to 500 words. This should include a brief overview of the problem being addressed, the solution proposed, and the technology used.(Problem statement, relevance, solution approach, tech stack, challenges, future scope)
+
+Theme: Select one of [Health-Tech, AgroTech, Blockchain, FinTech, Fitness & Sports]
+
+Github URL: All project submissions must include the Github URL of the team's code repository. This should be a public repository and it should include a README file describing the project's objective, methodology, and results. This will help the judges evaluate the technical aspects of the project.
+
+Demo Video Link: All participating teams must submit a demo video of their project that showcases the main features and functionalities of their solution. The video should include the final UI of the project. Video should not be longer than two minutes.
+
+Web App URL: Provide the link if the project has been deployed. 
+
+Google Drive Link: If you wish to submit any sort of zip file, it can be done by uploading it on Google Drive and sharing the link here. 
+
+Discord: Make sure you are active on our Discord channel to stay up to date with the latest updates.
+
+PPT: Simple, focused

@@ -12,6 +12,7 @@ class _FinancialsState extends State<Financials> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Company Info")),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {

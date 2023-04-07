@@ -24,8 +24,8 @@ class LinkSmartContract extends ChangeNotifier {
     final String _wsUrl = "ws://127.0.0.1:7545/";
    */
 
-  final String _rpcUrl = "http://10.0.2.2:7545";
-  final String _wsUrl = "ws://10.0.2.2:7545/";
+  final String _rpcUrl = "http://192.168.0.185:7545";
+    final String _wsUrl = "ws://192.168.0.185:7545/";
   final String _privateKey =
       "0xe2f83c920fe2eb8b9088dd48325993b4f6364f4dcf30122b8b0f9d04336b22a2";
 

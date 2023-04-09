@@ -95,6 +95,9 @@ flutter:
     - family: Oswald
       fonts:
         - asset: fonts/Oswald-VariableFont_wght.ttf
+    - family: Alkatra
+      fonts:
+        - asset: fonts/Alkatra-VariableFont_wght.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

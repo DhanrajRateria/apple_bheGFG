@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+TextEditingController nameController = TextEditingController();
+TextEditingController addressController = TextEditingController();
+TextEditingController phoneController = TextEditingController();
+
 class Financials extends StatefulWidget {
   static const String id = 'financials';
 
@@ -36,6 +40,52 @@ class _FinancialsState extends State<Financials> {
           ),
         ],
       ),
+      body: [
+        SafeArea(
+            child: Center(
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            CircleAvatar(
+              radius: 50,
+            ),
+            Row(
+              children: [
+                Text("Name of your company"),
+                Text(
+                  nameController.text,
+                  style: TextStyle(fontFamily: "Alkatra", fontSize: 30),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text("Address"),
+                Text(
+                  addressController.text,
+                  style: TextStyle(fontFamily: "Alkatra", fontSize: 30),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Text("Contact no."),
+                Text(
+                  phoneController.text,
+                  style: TextStyle(fontFamily: "Alkatra", fontSize: 30),
+                ),
+              ],
+            )
+          ]),
+        ),
+        ),
+        Container(
+          child: Center(
+            child: Text("No data to display"),
+          ),
+        ),
+        Container(
+          
+        )
+      ][currentPageIndex],
     );
   }
 }

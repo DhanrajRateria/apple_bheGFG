@@ -47,114 +47,123 @@ class _FinancialsState extends State<Financials> {
         ],
       ),
       body: [
-        SafeArea(
-          child: Center(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              CircleAvatar(
-                radius: 50,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Name of your company",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    nameController.text,
-                    style: TextStyle(
-                        fontFamily: "Alkatra",
-                        fontSize: 30,
-                        color: Colors.white),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Address",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    addressController.text,
-                    style: TextStyle(
-                        fontFamily: "Alkatra",
-                        fontSize: 30,
-                        color: Colors.white),
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Contact no.",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    phoneController.text,
-                    style: TextStyle(
-                        fontFamily: "Alkatra",
-                        fontSize: 30,
-                        color: Colors.white),
-                  ),
-                ],
-              ),
-              ElevatedButton(
-                  child: Text("Set Details"),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                            title: Text('Set Details'),
-                            content: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  TextField(
-                                    controller: nameController,
-                                    decoration: InputDecoration(
-                                        labelText: 'Name of the Company'),
-                                  ),
-                                  TextField(
-                                    controller: addressController,
-                                    decoration:
-                                        InputDecoration(labelText: 'Address'),
-                                  ),
-                                  TextField(
-                                    controller: phoneController,
-                                    decoration:
-                                        InputDecoration(labelText: 'Phone'),
-                                  ),
-                                ],
-                              ),
+        StreamBuilder<QuerySnapshot>(
+            stream: firestore
+                .collection('details')
+                .where('user_email', isEqualTo: userEmail)
+                .snapshots(includeMetadataChanges: true),
+            builder: (context, snapshot) {
+              return SafeArea(
+                child: Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Name of your company",
+                              style: TextStyle(color: Colors.white),
                             ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
+                            Text(
+                              nameController.text,
+                              style: TextStyle(
+                                  fontFamily: "Alkatra",
+                                  fontSize: 30,
+                                  color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Address",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              addressController.text,
+                              style: TextStyle(
+                                  fontFamily: "Alkatra",
+                                  fontSize: 30,
+                                  color: Colors.white),
+                            )
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Contact no.",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              phoneController.text,
+                              style: TextStyle(
+                                  fontFamily: "Alkatra",
+                                  fontSize: 30,
+                                  color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        ElevatedButton(
+                            child: Text("Set Details"),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      title: Text('Set Details'),
+                                      content: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            TextField(
+                                              controller: nameController,
+                                              decoration: InputDecoration(
+                                                  labelText:
+                                                      'Name of the Company'),
+                                            ),
+                                            TextField(
+                                              controller: addressController,
+                                              decoration: InputDecoration(
+                                                  labelText: 'Address'),
+                                            ),
+                                            TextField(
+                                              controller: phoneController,
+                                              decoration: InputDecoration(
+                                                  labelText: 'Phone'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            addDetails(userEmail!);
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Add'),
+                                        ),
+                                      ]);
                                 },
-                                child: Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  addDetails(userEmail!);
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('Add'),
-                              ),
-                            ]);
-                      },
-                    );
-                  })
-            ]),
-          ),
-        ),
+                              );
+                            })
+                      ]),
+                ),
+              );
+            }),
         Container(
           child: Center(
             child: Text(

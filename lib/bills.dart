@@ -74,7 +74,14 @@ class _BillsState extends State<Bills> {
           ],
         ),
       ),
-      
+      actions: [
+        TextButton(
+          onPressed: () {
+            addBill();
+          },
+          child: Text('Create Bill'),
+        ),
+      ],
     );
   }
 }

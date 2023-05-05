@@ -151,14 +151,6 @@ class _OrderScreenState extends State<OrderScreen> {
                           context: context,
                           builder: (BuildContext context) {
                             return Bills(
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    addBill();
-                                  },
-                                  child: Text('Create Bill'),
-                                ),
-                              ],
                             );
                           },
                         );

@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart' as prov;
 import 'package:apple_bhe/link_contract.dart';
 import 'package:apple_bhe/block.dart';
-
+import 'package:apple_bhe/bills.dart';
 class OrderScreen extends StatefulWidget {
   static const String id = 'order_screen';
 
@@ -144,11 +144,25 @@ class _OrderScreenState extends State<OrderScreen> {
                       child: Text('Cancel'),
                     ),
                     TextButton(
+                      child: Text('Create Bill'),
                       onPressed: () {
                         addRow(userEmail);
-                        Navigator.of(context).pop();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Bills(
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    addBill();
+                                  },
+                                  child: Text('Create Bill'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
-                      child: Text('Add'),
                     ),
                   ],
                 );

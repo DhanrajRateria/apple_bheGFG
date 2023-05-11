@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Bills extends StatefulWidget {
   @override
@@ -6,7 +8,10 @@ class Bills extends StatefulWidget {
 }
 
 class _BillsState extends State<Bills> {
-  final TextEditingController _idController = TextEditingController();
+  final user = FirebaseAuth.instance.currentUser;
+  late final userEmail = user?.email;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final TextEditingController _pidController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
@@ -16,7 +21,7 @@ class _BillsState extends State<Bills> {
     _fields = [
       Row(children: [
         TextField(
-          controller: _idController,
+          controller: _pidController,
           decoration: InputDecoration(labelText: 'ID'),
         ),
         TextField(
@@ -39,7 +44,7 @@ class _BillsState extends State<Bills> {
     setState(() {
       _fields.add(Row(children: [
         TextField(
-          controller: _idController,
+          controller: _pidController,
           decoration: InputDecoration(labelText: 'ID'),
         ),
         TextField(
@@ -77,11 +82,25 @@ class _BillsState extends State<Bills> {
       actions: [
         TextButton(
           onPressed: () {
-            addBill();
+            addBill(userEmail!);
           },
           child: Text('Create Bill'),
         ),
       ],
     );
+  }
+
+  Future<void> addBill(String userEmail) async {
+    await firestore.collection('bills').add({
+      'name_quantity[]': _pidController.text,
+      'name_quantity': _nameController.text,
+      'user_email': userEmail,
+    });
+    setState(() {
+      _pidController.text = '';
+      _nameController.text = '';
+      _quantityController.text = '';
+      _priceController.text = '';
+    });
   }
 }

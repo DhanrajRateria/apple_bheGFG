@@ -5,6 +5,7 @@ import 'package:provider/provider.dart' as prov;
 import 'package:apple_bhe/link_contract.dart';
 import 'package:apple_bhe/block.dart';
 import 'package:apple_bhe/bills.dart';
+
 class OrderScreen extends StatefulWidget {
   static const String id = 'order_screen';
 
@@ -151,7 +152,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           context: context,
                           builder: (BuildContext context) {
                             return Bills(
-                            );
+                       );
                           },
                         );
                       },

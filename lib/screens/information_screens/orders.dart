@@ -262,14 +262,38 @@ class _OrderScreenState extends State<OrderScreen> {
 
   Future<void> addBill(String userEmail) async {
     final collectionReference = FirebaseFirestore.instance.collection('bills');
-
+    List<Map<String, dynamic>> rowData = [];
     // Modify the data in the array
-    for (var i = 0; i < _fields.length; i++) {
-      _fields[i]['id'] = _pidController.text;
-      _fields[i]['quantity'] = _quantityController.text;
-      final newDocumentRef = collectionReference.doc();
-      await newDocumentRef.set(_fields[i]);
+    for (var row in _fields) {
+      // Create a map to represent the row data
+      Map<String, dynamic> rowMap = {
+        'id': (row.children[0] as TextField).controller?.text,
+        'name': (row.children[1] as TextField).controller?.text,
+        'quantity': (row.children[2] as TextField).controller?.text,
+        'total_price': (row.children[3] as TextField).controller?.text,
+      };
+      rowData.add(rowMap);
     }
+    final inventoryQuerySnapshot = await firestore
+        .collection('inventory')
+        .where('id', isEqualTo: _pidController.text)
+        .limit(1)
+        .get();
+    if (inventoryQuerySnapshot.docs.isNotEmpty) {
+      final inventoryData = inventoryQuerySnapshot.docs[0].data();
+      // Automatically fill the name and price fields
+      final String name = inventoryData['name'];
+      final String price = inventoryData['price'];
+
+      // Add the updated row data to the bills collection
+      rowData.add({
+        'id': _pidController.text,
+        'name': name,
+        'quantity': _quantityController.text,
+        'total_price': price * int.parse(_quantityController.text),
+      });
+    }
+    await collectionReference.add({'rows': rowData});
     setState(() {
       _pidController.text = '';
       _nameController.text = '';

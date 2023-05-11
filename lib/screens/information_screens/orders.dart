@@ -203,28 +203,33 @@ class _OrderScreenState extends State<OrderScreen> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('Create Bill'),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    ..._fields,
-                                    SizedBox(height: 10),
-                                    ElevatedButton(
-                                      onPressed: _addNewField,
-                                      child: Text('Add Row'),
-                                    ),
-                                  ],
+                                title: Text('Create Bill'),
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      ..._fields,
+                                      SizedBox(height: 10),
+                                      ElevatedButton(
+                                        onPressed: _addNewField,
+                                        child: Text('Add Row'),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    addBill(userEmail);
-                                  },
-                                  child: Text('Create Bill'),
-                                ),
-                              ],
-                            );
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      addBill(userEmail);
+                                    },
+                                    child: Text('Create Bill'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancel'),
+                                  )
+                                ]);
                           },
                         );
                       },
@@ -256,12 +261,15 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   Future<void> addBill(String userEmail) async {
-    await firestore.collection('bills').add({
-      'id': _idController.text,
-      'name_quantity[]': _pidController.text,
-      'name_quantity': _nameController.text,
-      'user_email': userEmail,
-    });
+    final collectionReference = FirebaseFirestore.instance.collection('bills');
+
+    // Modify the data in the array
+    for (var i = 0; i < _fields.length; i++) {
+      _fields[i]['id'] = _pidController.text;
+      _fields[i]['quantity'] = _quantityController.text;
+      final newDocumentRef = collectionReference.doc();
+      await newDocumentRef.set(_fields[i]);
+    }
     setState(() {
       _pidController.text = '';
       _nameController.text = '';

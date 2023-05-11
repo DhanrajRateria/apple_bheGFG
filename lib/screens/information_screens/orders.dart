@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart' as prov;
 import 'package:apple_bhe/link_contract.dart';
 import 'package:apple_bhe/block.dart';
-import 'package:apple_bhe/bills.dart';
 
 class OrderScreen extends StatefulWidget {
   static const String id = 'order_screen';
@@ -19,6 +18,58 @@ class _OrderScreenState extends State<OrderScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _valueController = TextEditingController();
+  final TextEditingController _pidController = TextEditingController();
+  final TextEditingController _pnameController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  late List _fields;
+  void initState() {
+    super.initState();
+    _fields = [
+      Row(children: [
+        TextField(
+          controller: _pidController,
+          decoration: InputDecoration(labelText: 'ID'),
+        ),
+        TextField(
+          controller: _pnameController,
+          decoration: InputDecoration(labelText: 'Name'),
+        ),
+        TextField(
+          controller: _quantityController,
+          decoration: InputDecoration(labelText: 'Quantity'),
+        ),
+        TextField(
+          controller: _priceController,
+          decoration: InputDecoration(labelText: 'Total Price'),
+        ),
+      ])
+    ];
+  }
+
+  void _addNewField() {
+    setState(() {
+      _fields.add(Row(children: [
+        TextField(
+          controller: _pidController,
+          decoration: InputDecoration(labelText: 'ID'),
+        ),
+        TextField(
+          controller: _pnameController,
+          decoration: InputDecoration(labelText: 'Name'),
+        ),
+        TextField(
+          controller: _quantityController,
+          decoration: InputDecoration(labelText: 'Quantity'),
+        ),
+        TextField(
+          controller: _priceController,
+          decoration: InputDecoration(labelText: 'Total Price'),
+        ),
+      ]));
+    });
+  }
+
   String? selectedDocId;
   late LinkSmartContract linkSmartContract;
   late List<Block> blocks;
@@ -151,8 +202,29 @@ class _OrderScreenState extends State<OrderScreen> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return Bills(
-                       );
+                            return AlertDialog(
+                              title: Text('Create Bill'),
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    ..._fields,
+                                    SizedBox(height: 10),
+                                    ElevatedButton(
+                                      onPressed: _addNewField,
+                                      child: Text('Add Row'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    addBill(userEmail);
+                                  },
+                                  child: Text('Create Bill'),
+                                ),
+                              ],
+                            );
                           },
                         );
                       },
@@ -180,6 +252,21 @@ class _OrderScreenState extends State<OrderScreen> {
       _nameController.text = '';
       _typeController.text = '';
       _valueController.text = '';
+    });
+  }
+
+  Future<void> addBill(String userEmail) async {
+    await firestore.collection('bills').add({
+      'id': _idController.text,
+      'name_quantity[]': _pidController.text,
+      'name_quantity': _nameController.text,
+      'user_email': userEmail,
+    });
+    setState(() {
+      _pidController.text = '';
+      _nameController.text = '';
+      _quantityController.text = '';
+      _priceController.text = '';
     });
   }
 }

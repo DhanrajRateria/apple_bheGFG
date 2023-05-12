@@ -49,24 +49,36 @@ class _OrderScreenState extends State<OrderScreen> {
 
   void _addNewField() {
     setState(() {
-      _fields.add(Row(children: [
-        TextField(
-          controller: _pidController,
-          decoration: InputDecoration(labelText: 'ID'),
+      _fields.add(
+        Row(
+          children: [
+            Flexible(
+              child: TextField(
+                controller: _pidController,
+                decoration: InputDecoration(labelText: 'ID'),
+              ),
+            ),
+            Flexible(
+              child: TextField(
+                controller: _pnameController,
+                decoration: InputDecoration(labelText: 'Name'),
+              ),
+            ),
+            Flexible(
+              child: TextField(
+                controller: _quantityController,
+                decoration: InputDecoration(labelText: 'Quantity'),
+              ),
+            ),
+            Flexible(
+              child: TextField(
+                controller: _priceController,
+                decoration: InputDecoration(labelText: 'Total Price'),
+              ),
+            ),
+          ],
         ),
-        TextField(
-          controller: _pnameController,
-          decoration: InputDecoration(labelText: 'Name'),
-        ),
-        TextField(
-          controller: _quantityController,
-          decoration: InputDecoration(labelText: 'Quantity'),
-        ),
-        TextField(
-          controller: _priceController,
-          decoration: InputDecoration(labelText: 'Total Price'),
-        ),
-      ]));
+      );
     });
   }
 
@@ -92,7 +104,6 @@ class _OrderScreenState extends State<OrderScreen> {
     blocks = linkSmartContract.blocks;
     final user = FirebaseAuth.instance.currentUser;
     final userEmail = user?.email;
-
     if (userEmail == null) {
       return Center(
         child: Text('User not signed in.'),
@@ -199,39 +210,40 @@ class _OrderScreenState extends State<OrderScreen> {
                       child: Text('Create Bill'),
                       onPressed: () {
                         addRow(userEmail);
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                                title: Text('Create Bill'),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      ..._fields,
-                                      SizedBox(height: 10),
-                                      ElevatedButton(
-                                        onPressed: _addNewField,
-                                        child: Text('Add Row'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      addBill(userEmail);
-                                    },
-                                    child: Text('Create Bill'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Cancel'),
-                                  )
-                                ]);
-                          },
-                        );
+                        Navigator.of(context).pop();
+                        // showDialog(
+                        //   context: context,
+                        //   builder: (BuildContext context) {
+                        //     return AlertDialog(
+                        //         title: Text('Create Bill'),
+                        //         content: SingleChildScrollView(
+                        //           child: Column(
+                        //             children: [
+                        //               ..._fields,
+                        //               SizedBox(height: 10),
+                        //               ElevatedButton(
+                        //                 onPressed: _addNewField,
+                        //                 child: Text('Add Row'),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //         actions: [
+                        //           TextButton(
+                        //             onPressed: () {
+                        //               addBill(userEmail);
+                        //             },
+                        //             child: Text('Create Bill'),
+                        //           ),
+                        //           TextButton(
+                        //             onPressed: () {
+                        //               Navigator.of(context).pop();
+                        //             },
+                        //             child: Text('Cancel'),
+                        //           )
+                        //         ]);
+                        //   },
+                        // );
                       },
                     ),
                   ],
@@ -261,19 +273,19 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   Future<void> addBill(String userEmail) async {
-    final collectionReference = FirebaseFirestore.instance.collection('bills');
-    List<Map<String, dynamic>> rowData = [];
-    // Modify the data in the array
-    for (var row in _fields) {
-      // Create a map to represent the row data
-      Map<String, dynamic> rowMap = {
-        'id': (row.children[0] as TextField).controller?.text,
-        'name': (row.children[1] as TextField).controller?.text,
-        'quantity': (row.children[2] as TextField).controller?.text,
-        'total_price': (row.children[3] as TextField).controller?.text,
-      };
-      rowData.add(rowMap);
-    }
+  final collectionReference =
+      FirebaseFirestore.instance.collection('bills');
+  List<Map<String, dynamic>> rowData = [];
+  // Modify the data in the array
+  for (var row in _fields) {
+    Map<String, dynamic> rowMap = {
+      'id': (_pidController.text),
+      'name': (_pnameController.text),
+      'quantity': (_quantityController.text),
+      'total_price': (_priceController.text),
+    };
+    rowData.add(rowMap);
+  }
     final inventoryQuerySnapshot = await firestore
         .collection('inventory')
         .where('id', isEqualTo: _pidController.text)
@@ -281,16 +293,14 @@ class _OrderScreenState extends State<OrderScreen> {
         .get();
     if (inventoryQuerySnapshot.docs.isNotEmpty) {
       final inventoryData = inventoryQuerySnapshot.docs[0].data();
-      // Automatically fill the name and price fields
       final String name = inventoryData['name'];
       final String price = inventoryData['price'];
 
-      // Add the updated row data to the bills collection
       rowData.add({
         'id': _pidController.text,
         'name': name,
         'quantity': _quantityController.text,
-        'total_price': price * int.parse(_quantityController.text),
+        'total_price': int.parse(price) * int.parse(_quantityController.text),
       });
     }
     await collectionReference.add({'rows': rowData});

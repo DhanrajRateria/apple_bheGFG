@@ -61,15 +61,13 @@ class _InventoryScreen extends State<InventoryScreen> {
                 rows: snapshot.data!.docs.map((doc) {
                   return DataRow(
                     cells: [
-                      DataCell(Text(
-                        doc['id'],
-                        style: TextStyle(color: Colors.white),
-                      )),
+                      DataCell(Text(doc['id'].toString(),
+                        style: TextStyle(color: Colors.white),)),
                       DataCell(Text(doc['name'],
                           style: TextStyle(color: Colors.white))),
-                      DataCell(Text(doc['quantity'],
+                      DataCell(Text(doc['quantity'].toString(),
                           style: TextStyle(color: Colors.white))),
-                      DataCell(Text(doc['price'],
+                      DataCell(Text(doc['price'].toString(),
                           style: TextStyle(color: Colors.white))),
                       DataCell(
                         Row(
